@@ -4,17 +4,18 @@ const global = {
 
 // FETCH DATA FROM TMDB API
 
-async function fetchAPIData(endppoint) {
+async function fetchAPIData(endpoint) {
   const API_KEY = '1fba9b01cd3613a05c746fb2ad0e11d4';
   const API_URL = 'https://api.themoviedb.org/3/';
 
-  const response = await fetch(`${API_URL}${endppoint}?api_key=${API_KEY}&language=en-US`);
+  const response = await fetch(`${API_URL}${endpoint}?api_key=${API_KEY}&language=en-US`);
 
   const data = await response.json();
 
   return data;
 }
 
+//POPULAR MOVIES
 async function displayPopularMovies() {
   const { results } = await fetchAPIData('movie/popular');
   results.forEach((movie) => {
@@ -43,9 +44,13 @@ async function displayPopularMovies() {
             </p>
           </div>
         `;
-
     document.querySelector('#popular-movies').appendChild(div);
   });
+}
+
+//POPULAR TV SHOWS
+async function displayTvShows(endpoint) {
+  const results = fetch(`${API_URL}`);
 }
 
 // HIGHLIGHT ACTIVE LINK
