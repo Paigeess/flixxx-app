@@ -2,23 +2,6 @@ const global = {
   currentPage: window.location.pathname,
 };
 
-// FETCH DATA FROM TMDB API
-
-async function fetchAPIData(endpoint) {
-  const API_KEY = '1fba9b01cd3613a05c746fb2ad0e11d4';
-  const API_URL = 'https://api.themoviedb.org/3/';
-
-  showSpinner();
-
-  const response = await fetch(`${API_URL}${endpoint}?api_key=${API_KEY}&language=en-US`);
-
-  const data = await response.json();
-
-  hideSpinner();
-
-  return data;
-}
-
 //POPULAR MOVIES
 async function displayPopularMovies() {
   const { results } = await fetchAPIData('movie/popular');
@@ -101,9 +84,79 @@ function highlightActiveLink() {
 function showSpinner() {
   document.querySelector('.spinner').classList.add('show');
 }
-
 function hideSpinner() {
   document.querySelector('.spinner').classList.remove('show');
+}
+
+// DISPLAY MOVIE DETAILS
+async function displayMovieDetails() {
+  const movieId = window.location.search.split('=')[1];
+
+  const movie = await fetchAPIData(`movie/${movieId}`);
+
+  const div = document.createElement('div');
+
+  div.innerHTML = `
+   <div class="details-top">
+          <div>
+            <img
+              src="images/no-image.jpg"
+              class="card-img-top"
+              alt="Movie Title"
+            />
+          </div>
+          <div>
+            <h2>Movie Title</h2>
+            <p>
+              <i class="fas fa-star text-primary"></i>
+              8 / 10
+            </p>
+            <p class="text-muted">Release Date: XX/XX/XXXX</p>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores
+              atque molestiae error debitis provident dolore hic odit, impedit
+              sint, voluptatum consectetur assumenda expedita perferendis
+              obcaecati veritatis voluptatibus. Voluptatum repellat suscipit,
+              quae molestiae cupiditate modi libero dolorem commodi obcaecati!
+              Ratione quia corporis recusandae delectus perspiciatis consequatur
+              ipsam. Cumque omnis ad recusandae.
+            </p>
+            <h5>Genres</h5>
+            <ul class="list-group">
+              <li>Genre 1</li>
+              <li>Genre 2</li>
+              <li>Genre 3</li>
+            </ul>
+            <a href="#" target="_blank" class="btn">Visit Movie Homepage</a>
+          </div>
+        </div>
+        <div class="details-bottom">
+          <h2>Movie Info</h2>
+          <ul>
+            <li><span class="text-secondary">Budget:</span> $1,000,000</li>
+            <li><span class="text-secondary">Revenue:</span> $2,000,000</li>
+            <li><span class="text-secondary">Runtime:</span> 90 minutes</li>
+            <li><span class="text-secondary">Status:</span> Released</li>
+          </ul>
+          <h4>Production Companies</h4>
+          <div class="list-group">Company 1, Company 2, Company 3</div>
+        </div>`;
+}
+
+// FETCH DATA FROM TMDB API
+async function fetchAPIData(endpoint) {
+  const API_KEY = '1fba9b01cd3613a05c746fb2ad0e11d4';
+  const API_URL = 'https://api.themoviedb.org/3/';
+
+  showSpinner();
+
+  const response = await fetch(`${API_URL}${endpoint}?api_key=${API_KEY}&language=en-US`);
+
+  const data = await response.json();
+
+  hideSpinner();
+
+  return data;
 }
 
 // INIT APP
@@ -114,11 +167,10 @@ function init() {
       displayPopularMovies();
       break;
     case '/shows.html':
-      console.log('Shows');
       displayTvShows();
       break;
     case '/movie-details.html':
-      console.log('Movie Details');
+      displayMovieDetails();
       break;
     case '/tv-details.html':
       console.log('TV Details');
