@@ -133,13 +133,17 @@ async function displayMovieDetails() {
         <div class="details-bottom">
           <h2>Movie Info</h2>
           <ul>
-            <li><span class="text-secondary">Budget:</span> $${movie.budget}</li>
-            <li><span class="text-secondary">Revenue:</span> $${movie.revenue}</li>
+            <li><span class="text-secondary">Budget:</span> $${addCommasToNumber(movie.budget)}</li>
+            <li><span class="text-secondary">Revenue:</span> $${addCommasToNumber(
+              movie.revenue
+            )}</li>
             <li><span class="text-secondary">Runtime:</span> ${movie.runtime} minutes</li>
             <li><span class="text-secondary">Status:</span> ${movie.status}</li>
           </ul>
           <h4>Production Companies</h4>
-          <div class="list-group">Company 1, Company 2, Company 3</div>
+          <div class="list-group">${movie.production_companies
+            .map((company) => `<spam>${company.name}</span>`)
+            .join(',')}</div>
         </div>`;
 
   document.querySelector('#movie-details').appendChild(div);
@@ -159,6 +163,11 @@ async function fetchAPIData(endpoint) {
   hideSpinner();
 
   return data;
+}
+
+//ADD COMMAS TO NUMBERS
+function addCommasToNumber(number) {
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
 // INIT APP
