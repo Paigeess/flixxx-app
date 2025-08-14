@@ -320,6 +320,7 @@ function init() {
       displayPopularMovies();
       break;
     case '/shows.html':
+    case '/show':
       displayTvShows();
       break;
     case '/movie-details.html':
